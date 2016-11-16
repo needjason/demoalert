@@ -27,7 +27,7 @@ coreo_aws_advisor_alert "myalert" do
   alert_when [10]
 end
 
-coreo_aws_advisor_redshift "" do
+coreo_aws_advisor_redshift "jason" do
   action :advise
   alerts ["myalert"]
 end
@@ -37,7 +37,7 @@ coreo_uni_util_notify "advise-redshift" do
   type 'email'
   allow_empty true
   send_on "always"
-  payload 'COMPOSITE::coreo_uni_util_notify.advise-redshift.report'
+  payload 'COMPOSITE::coreo_uni_util_notify.jason.report'
   payload_type "json"
   endpoint ({
       :to => 'jason@cloudcoreo.com', :subject => 'test alert'
