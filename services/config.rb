@@ -11,13 +11,34 @@
 ## end
 ##
 
+coreo_aws_advisor_alert "myalert" do
+  action :define
+  service :redshift
+  link "N/A"
+  display_name "Redshift short snapshot retention period"
+  description "sign of a redshift newbie"
+  category "Dataloss"
+  suggested_action "lengthen it dumbass"
+  level "Warning"
+  objectives ["clusters"]
+  id_map "object.clusters.cluster_identifier"
+  audit_objects ["object.clusters.automated_snapshot_retention_period"]
+  operators ["<="]
+  alert_when [10]
+end
+
+coreo_aws_advisor_redshift "" do
+  action :advise
+  alerts ["myalert"]
+end
+
 coreo_uni_util_notify "advise-redshift" do
   action :notify
   type 'email'
   allow_empty true
   send_on "always"
-  payload '{}'
-  payload_type "text"
+  payload 'COMPOSITE::coreo_uni_util_notify.advise-redshift.report'
+  payload_type "json"
   endpoint ({
       :to => 'jason@cloudcoreo.com', :subject => 'test alert'
   })
